@@ -48,16 +48,16 @@ export default {
   },
   methods: {
     colorImages(color) {
-      if (color == "normal") this.imagescolor = this.images.normal;
-      else if (color == "blue") this.imagescolor = this.images.blue;
-      else if (color == "pink") this.imagescolor = this.images.pink;
+      if (color == "normal") this.imagescolor = this.images.normal
+      else if (color == "blue") this.imagescolor = this.images.blue
+      else if (color == "pink") this.imagescolor = this.images.pink
       else this.imagescolor = this.images.black;
     },
     telPrices(price) {
-      if (price == 500) this.pricestel = this.prices.normal;
-      else if (price == 450) this.pricestel = this.prices.mini;
-      else if (price == 750) this.pricestel = this.prices.pro;
-      else this.pricestel = this.prices.proMax;
+      if (price == 500) this.pricestel = this.prices.normal
+      else if (price == 450) this.pricestel = this.prices.mini
+      else if (price == 750) this.pricestel = this.prices.pro
+      else this.pricestel = this.prices.proMax
     },
   },
 };
