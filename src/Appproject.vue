@@ -1,9 +1,9 @@
 <template>
-  <body>
+  <div>
       <div>
-          <button @click="to(1)">food</button>
-          <button @click="to(2)">login</button>
-          <button @click="to(3)">listbuy</button>
+          <button :class="tab===1?'activeMenu':'defaultMenu'" @click="to(1)">food</button>
+          <button :class="tab===2?'activeMenu':'defaultMenu'" @click="to(2)">login</button>
+          <button :class="tab===3?'activeMenu':'defaultMenu'" @click="to(3)">listbuy</button>
           <span v-show="cart">1</span>
       </div>
       <div>
@@ -25,20 +25,22 @@
               </div>
           </div>
           <div v-if="tab===2">
-              <h1></h1>
-              <div>
-                  <input type="email">
-              </div>
-              <div>
-                  <input type="password">
-              </div>
-              <div>
-                  <button>Regis</button>
-                  <button>Login</button>
-              </div>
+              <form @submit.prevent="submit">
+                  <h1>Member</h1>
+                  <div>
+                      <input type="email" v-model="user.email" required>
+                  </div>
+                  <div>
+                      <input type="password" v-model="user.password" required>
+                  </div>
+                  <div>
+                      <button type="button">Regis</button>
+                      <button type="submit">Login</button>
+                  </div>
+              </form>
           </div>
           <div v-if="tab===3">
-              <h2>Cart</h2>
+              <h1>Cart</h1>
               <div v-if="cart">
                   <img :src="cart.image" alt="" class="imgmenu">
                   <h2>{{cart.title}}</h2>
@@ -48,14 +50,14 @@
           </div>
       </div>
     
-  </body>
+  </div>
 </template>
 
 <script>
 export default {
     data(){
         return{
-            tab:0,
+            tab:2,
             menu1:{
                 image:require("./assets/01ปลากะพงทอดราดพริก3รส.jpg"),
                 title:'ปลากะพงทอดราดพริก 3 รส',
@@ -70,6 +72,10 @@ export default {
             },
             plus:require("./assets/plus.png"),
             cart:null,
+            user:{
+                email:'',
+                password:'',
+            }
         }
     },
     methods:{
@@ -82,6 +88,14 @@ export default {
         },
         addToCart(food){
             this.cart=food
+        },
+        submit(){
+            // if(this.user.email&&this.user.password){
+            //     alert('Login Success')
+            // }else{
+            //     alert('Please Check Input')
+            // }
+            alert('Login Success')
         }
     }
 }
@@ -108,5 +122,13 @@ body {
 }
 .plus{
     height: 1cm;
+}
+.activeMenu{
+    background-color: crimson;
+    color: white;
+}
+.defaultMenu{
+    background-color: #ededed;
+    border: none;
 }
 </style>
