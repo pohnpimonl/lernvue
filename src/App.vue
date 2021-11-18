@@ -1,53 +1,41 @@
 <template>
   <div>
     <div>
-      <button :class="tab === 1 ? 'activeMenu' : 'defaultMenu'" @click="to(1)">List Food</button>
-      <button :class="tab === 2 ? 'activeMenu' : 'defaultMenu'" @click="to(2)">Login</button>
-      <button :class="tab === 3 ? 'activeMenu' : 'defaultMenu'" @click="to(3)">List Buy</button>
+      <img class="logoimg" src="./assets/logo.jpg" />
+    </div>
+    <div>
+      <button :class="tab === 1 ? 'activeMenu' : 'defaultMenu'" @click="to(1)">อาหาร</button>
+      <button :class="tab === 2 ? 'activeMenu' : 'defaultMenu'" @click="to(2)">สมาชิก</button>
+      <button :class="tab === 3 ? 'activeMenu' : 'defaultMenu'" @click="to(3)">รายการสั่งซื้อ</button>
       <span v-show="cart.length">{{ cart.length }}</span>
     </div>
     <div>
       <div v-if="tab === 1">
-        <h1>List Food</h1>
+        <h2>รายการอาหาร</h2>
+        <h3>recommends</h3>
         <div>
-          <img :src="foods[0].image" alt="" class="imgmenu" />
-          <h2>{{ foods[0].title }}</h2>
-          <h4>{{ foods[0].desscription }}</h4>
-          <h4>{{ foods[0].price }} Baht</h4>
-          <button @click="addToCart(foods[0])"><img :src="plus" class="plus" /></button>
+          <div v-for="(food, i) in foodList.recommends" :key="i">
+            <img :src="food.image" alt="" class="menuimg" />
+            <h4>{{ food.title }}</h4>
+            <h5>{{ food.desscription }}</h5>
+            <h6>{{ food.price }} Baht</h6>
+            <button @click="addToCart(food)"><img :src="plus" class="plusimg" /></button>
+          </div>
         </div>
+        <h3>other</h3>
         <div>
-          <img :src="foods[1].image" alt="" class="imgmenu" />
-          <h2>{{ foods[1].title }}</h2>
-          <h4>{{ foods[1].desscription }}</h4>
-          <h4>{{ foods[1].price }} Baht</h4>
-          <button @click="addToCart(foods[1])"><img :src="plus" class="plus" /></button>
-        </div>
-        <div>
-          <img :src="foods[2].image" alt="" class="imgmenu" />
-          <h2>{{ foods[2].title }}</h2>
-          <h4>{{ foods[2].desscription }}</h4>
-          <h4>{{ foods[2].price }} Baht</h4>
-          <button @click="addToCart(foods[2])"><img :src="plus" class="plus" /></button>
-        </div>
-        <div>
-          <img :src="foods[3].image" alt="" class="imgmenu" />
-          <h2>{{ foods[3].title }}</h2>
-          <h4>{{ foods[3].desscription }}</h4>
-          <h4>{{ foods[3].price }} Baht</h4>
-          <button @click="addToCart(foods[3])"><img :src="plus" class="plus" /></button>
-        </div>
-        <div>
-          <img :src="foods[4].image" alt="" class="imgmenu" />
-          <h2>{{ foods[4].title }}</h2>
-          <h4>{{ foods[4].desscription }}</h4>
-          <h4>{{ foods[4].price }} Baht</h4>
-          <button @click="addToCart(foods[4])"><img :src="plus" class="plus" /></button>
+          <div v-for="(food, i) in foodList.rest" :key="i">
+            <img :src="food.image" alt="" class="menuimg" />
+            <h4>{{ food.title }}</h4>
+            <h5>{{ food.desscription }}</h5>
+            <h6>{{ food.price }} Baht</h6>
+            <button @click="addToCart(food)"><img :src="plus" class="plusimg" /></button>
+          </div>
         </div>
       </div>
-      <div v-if="tab === 2">
+      <div v-if="tab === 2" class="formmemberl">
         <form @submit.prevent="submit">
-          <h1>Member</h1>
+          <h2>Member</h2>
           <div>
             <input type="email" v-model="user.email" required />
           </div>
@@ -61,39 +49,16 @@
         </form>
       </div>
       <div v-if="tab === 3">
-        <h1>Cart</h1>
-        <div v-if="cart[0]">
-          <img :src="cart[0].image" alt="" class="imgmenu" />
-          <h2>{{ cart[0].title }}</h2>
-          <h4>{{ cart[0].desscription }}</h4>
-          <h4>{{ cart[0].price }} Baht</h4>
-        </div>
-        <div v-if="cart[1]">
-          <img :src="cart[1].image" alt="" class="imgmenu" />
-          <h2>{{ cart[1].title }}</h2>
-          <h4>{{ cart[1].desscription }}</h4>
-          <h4>{{ cart[1].price }} Baht</h4>
-        </div>
-        <div v-if="cart[2]">
-          <img :src="cart[2].image" alt="" class="imgmenu" />
-          <h2>{{ cart[2].title }}</h2>
-          <h4>{{ cart[2].desscription }}</h4>
-          <h4>{{ cart[2].price }} Baht</h4>
-        </div>
-        <div v-if="cart[3]">
-          <img :src="cart[3].image" alt="" class="imgmenu" />
-          <h2>{{ cart[3].title }}</h2>
-          <h4>{{ cart[3].desscription }}</h4>
-          <h4>{{ cart[3].price }} Baht</h4>
-        </div>
-        <div v-if="cart[4]">
-          <img :src="cart[4].image" alt="" class="imgmenu" />
-          <h2>{{ cart[4].title }}</h2>
-          <h4>{{ cart[4].desscription }}</h4>
-          <h4>{{ cart[4].price }} Baht</h4>
+        <h2>Cart</h2>
+        <div v-for="(each, i) in cart" :key="i">
+          <img :src="each.food.image" alt="" class="menuimg" />
+          <h4>{{ each.food.title }}</h4>
+          <h5>{{ each.food.desscription }}</h5>
+          <h6>{{ each.food.price }} Baht</h6>
+          <button @click="removeFromCret(each)">---</button>
         </div>
         <div>
-          <h2>Total{{ total() }}Baht</h2>
+          <h3>Total{{ total }}Baht</h3>
         </div>
       </div>
     </div>
@@ -104,7 +69,8 @@
 export default {
   data() {
     return {
-      tab: 1,
+      tab: 2,
+      id: 1,
       foods: [
         {
           image: require("./assets/01ปลากะพงทอดราดพริก3รส.jpg"),
@@ -223,15 +189,42 @@ export default {
       },
     };
   },
-  methods: {
+  computed: {
     total() {
       let total = 0;
-      let i = 0;
-      while (i < this.cart.length) {
-        total += this.cart[i++].price;
+      for (let i = 0; i < this.cart.length; i++) {
+        total += this.cart[i].food.price;
       }
       return total;
     },
+    foodList() {
+      const recommends = [];
+      const rest = [];
+      for (let i = 0; i < this.foods.length; i++) {
+        if (i <= 5) {
+          recommends.push(this.foods[i]);
+        } else {
+          rest.push(this.foods[i]);
+        }
+      }
+      return {
+        recommends: recommends,
+        rest: rest,
+      };
+    },
+  },
+  watch: {
+    total(newValue, oldValue) {
+      if (newValue >= 10000 && oldValue < 10000) {
+        alert(">=10000");
+      } else if (newValue >= 4000 && oldValue < 4000) {
+        alert(">=4000");
+      } else if (newValue >= 2000 && oldValue < 2000) {
+        alert(">=2000");
+      }
+    },
+  },
+  methods: {
     to(page) {
       if (this.tab === page) {
         this.tab = 0;
@@ -240,7 +233,30 @@ export default {
       }
     },
     addToCart(food) {
-      this.cart.push(food);
+      // {
+      //   id,
+      //   food:{
+      //     title,
+      //     desscription,
+      //     price,
+      //     image
+      //   }
+      // }
+      this.cart.push({
+        id: this.id,
+        food: food,
+      });
+      this.id++;
+    },
+    removeFromCret(cartItem) {
+      const cart = [];
+      for (let i = 0; i < this.cart.length; i++) {
+        const current = this.cart[i];
+        if (cartItem.id !== current.id) {
+          cart.push(current);
+        }
+      }
+      this.cart = cart;
     },
     submit() {
       // if(this.user.email&&this.user.password){
@@ -255,30 +271,24 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Prompt&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   list-style: none;
   box-sizing: border-box;
-  font-family: "Kanit", sans-serif;
-  font-weight: bolder;
+  font-family: "Prompt", sans-serif;
 }
-body {
-  background-image: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.7) 0%,
-      rgba(255, 255, 255, 0.7) 100%
-    ),
-    url("assets/bg.jpg");
-  background-size: cover;
-  background-attachment: fixed;
+.logoimg {
+  height: 3cm;
 }
-.imgmenu {
-  height: 5cm;
+.menuimg {
+  border: 1px solid coral;
+  border-radius: 20px;
+  height: 3cm;
 }
-.plus {
+.plusimg {
   height: 1cm;
 }
 .activeMenu {
