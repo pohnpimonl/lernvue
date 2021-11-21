@@ -1,31 +1,26 @@
 <template>
   <div class="main">
-      <div class="logo"><img :src="logoimg"></div>
-      <div class="navmenu">
-          <button :class="tab === 1 ? 'activeMenu' : 'defaultMenu'" @click="to(1)">อาหาร</button>
-          <button :class="tab === 2 ? 'activeMenu' : 'defaultMenu'" @click="to(2)">สมาชิก</button>
-          <button :class="tab === 3 ? 'activeMenu' : 'defaultMenu'" @click="to(3)">รายการสั่งซื้อ</button>
-          <span>1</span>
-      </div>
-      <div v-if="tab === 1"><p-listfood :PListfoodp="foods" /></div>
-      <div v-if="tab === 2"><p-member/></div>
-      <div v-if="tab === 3"><p-cart/></div>
+    <div><p-logo-menu :PLogoMenup="tab" :cart="cart" @menu:chenge="to" /></div>
+    <div v-if="tab === 1"><p-listfood :PListfoodp="foods" @add:tocart="addToCart" /></div>
+    <div v-if="tab === 2"><p-member /></div>
+    <div v-if="tab === 3"><p-cart :PCartp="cart" @remove:fromcart="removeFromCart" /></div>
   </div>
 </template>
 
 <script>
+import PLogoMenu from './components/PLogoMenu.vue'
 import PListfood from './components/PListfood.vue'
 import PMember from './components/PMember.vue'
 import PCart from './components/PCart.vue'
 export default {
   components: {
-    PListfood,PMember,PCart,
+    PLogoMenu,PListfood,PMember,PCart,
   },
-  data(){
-      return{
-          logoimg: require("./assets/logo.jpg"),
-          tab: 1,
-          foods: [
+  data() {
+    return {
+      tab: 1,
+      id: 1,
+      foods: [
         {
           image: require("./assets/01ปลากะพงทอดราดพริก3รส.jpg"),
           title: "ปลากะพงทอดราดพริก 3 รส",
@@ -135,18 +130,37 @@ export default {
           price: 180,
         },
       ],
-      }
+      cart: [],
+    }
   },
-  methods:{
-      to(page) {
+  computed: {},
+  methods: {
+    to(page) {
       if (this.tab === page) {
-        this.tab = 0;
+        this.tab = 0
       } else {
-        this.tab = page;
+        this.tab = page
       }
     },
-  }
-};
+    addToCart(food) {
+      this.cart.push({
+        id: this.id,
+        food: food,
+      })
+      this.id++
+    },
+    removeFromCart(cartItem) {
+      const cart = []
+      for (let i = 0; i < this.cart.length; i++) {
+        const current = this.cart[i]
+        if (cartItem.id !== current.id) {
+          cart.push(current)
+        }
+      }
+      this.cart = cart
+    },
+  },
+}
 </script>
 
 <style>
@@ -159,7 +173,7 @@ export default {
   font-family: "Prompt", sans-serif;
 }
 body {
-  background: linear-gradient( rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)),url("./assets/bg.jpg");
+  background: linear-gradient( rgba(255, 255, 255, 0.75),rgba(255, 255, 255, 0.75)),url("./assets/bg.jpg");
   background-size: auto;
   background-attachment: fixed;
   width: 100vw;
@@ -169,28 +183,5 @@ body {
   width: 1180px;
   margin-left: auto;
   margin-right: auto;
-}
-.logo {
-  height: 290px;
-  padding: 90px 0 10px;
-  text-align: center;
-}
-.logo img {
-  height: 100%;
-  border-radius: 40%;
-}
-.navmenu {
-  text-align: center;
-}
-.navmenu button {
-  margin: 0 10px;
-}
-.activeMenu {
-  background-color: crimson;
-  color: white;
-}
-.defaultMenu {
-  background-color: #ededed;
-  border: none;
 }
 </style>

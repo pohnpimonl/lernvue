@@ -198,19 +198,19 @@ export default {
       return total;
     },
     foodList() {
-      const recommends = [];
-      const rest = [];
+      const recommends = []
+      const rest = []
       for (let i = 0; i < this.foods.length; i++) {
         if (i <= 5) {
-          recommends.push(this.foods[i]);
+          recommends.push(this.foods[i])
         } else {
-          rest.push(this.foods[i]);
+          rest.push(this.foods[i])
         }
       }
       return {
         recommends: recommends,
         rest: rest,
-      };
+      }
     },
   },
   watch: {
