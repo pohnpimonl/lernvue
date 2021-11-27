@@ -3,16 +3,17 @@
     <div class="cartb">
       <h5>คุณมีรายการคำสั่งซื้อในตะกร้าทั้งหมด</h5>
       <h5>{{ PCartp.length }} รายการ</h5>
-      <div v-for="(each, i) in PCartp" :key="i">
-        <img :src="each.food.image" alt="" class="menuimg" />
-        <h4>{{ each.food.title }}</h4>
-        <h5>{{ each.food.desscription }}</h5>
-        <h6>{{ each.food.price }} Baht</h6>
-        <button @click="removeFromCart(each)">---</button>
-      </div>
-      <div>
-        <h3>Total{{ total }}Baht</h3>
-      </div>
+    </div>
+    <div v-for="each in PCartp" :key="each.food.id" class="cartc">
+        <img class="imgcart" :src="picfoods+each.food.photo" alt="" />
+        <p>{{ each.food.name }}</p>
+        <p>{{ each.food.shopname }}</p>
+        <p>{{ each.food.price }} Baht</p>
+        <button @click="removeFromCart(each)">ลบ</button>
+    </div>
+    <div class="cartd">
+      <h3>Total{{ total }}Baht</h3>
+      <button type="submit">สั่งอาหาร</button>
     </div>
   </div>
 </template>
@@ -20,6 +21,11 @@
 <script>
 export default {
   props: ["PCartp"],
+  data(){
+    return{
+      picfoods:'https://camt-foodapi.pair-co.com'
+    }
+  },
   computed: {
     total() {
       let total = 0
@@ -40,8 +46,6 @@ export default {
 <style>
 .carta {
   margin-top: 20px;
-}
-.cartb {
   width: 560px;
   margin-left: auto;
   margin-right: auto;
@@ -49,7 +53,38 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 20px;
 }
-.cartb div img {
-  width: 100px;
+.cartc{
+  display: grid;
+  grid-template-columns: 20% 30% 30% 10% 10%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 88px;
+  margin: 8px 0;
+  overflow: hidden;
 }
+.cartc button{
+  background-color: #9a0606;
+  color: white;
+  padding: 14px 20px;
+  margin: 0;
+  border: none;
+  border-radius: 20px;
+}
+.cartd button{
+  background-color: #9a0606;
+  color: white;
+  padding: 14px 20px;
+  margin: 0;
+  border: none;
+  border-radius: 20px;
+}
+.imgcart{
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+}
+.cartd{
+  height: 108px;
+  text-align: center;
+}
+
 </style>

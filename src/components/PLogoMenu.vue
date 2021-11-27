@@ -39,15 +39,22 @@ export default {
 .navmenu {
   text-align: center;
 }
-.navmenu button {
-  margin: 0 10px;
+.navmenu button{
+  padding: 14px 20px;
+  margin: 8px 8px;
+  border: none;
+  border-radius: 20px;
+}
+.navmenu button:hover{
+  background-color: crimson;
 }
 .activeMenu {
-  background-color: crimson;
+  background-color: #9a0606;
   color: white;
 }
 .defaultMenu {
-  background-color: #ededed;
+  background-color: #eeeeee;
+  color: #8f8f8f;
   border: none;
 }
 </style>
